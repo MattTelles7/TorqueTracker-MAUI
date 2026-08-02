@@ -1,0 +1,75 @@
+# Build output
+[Bb]in/
+[Oo]bj/
+[Ll]og/
+[Ll]ogs/
+[Aa]rtifacts/
+
+# Visual Studio and VS Code state
+.vs/
+.vscode/
+*.suo
+*.user
+*.userosscache
+*.sln.docstates
+*.rsuser
+
+# JetBrains IDE state
+.idea/
+*.sln.iml
+
+# Test and coverage output
+[Tt]est[Rr]esult*/
+[Tt]est[Rr]esults/
+coverage*/
+*.coverage
+*.coveragexml
+
+# NuGet packages and generated files
+packages/
+*.nupkg
+*.snupkg
+*.nuget.props
+*.nuget.targets
+
+# .NET tooling
+.dotnet/
+.store/
+project.lock.json
+project.fragment.lock.json
+artifacts/
+
+# .NET MAUI generated packages and deployment output
+*.appx
+*.appxbundle
+*.msix
+*.msixbundle
+*.apk
+*.aab
+*.ipa
+
+# Signing keys and provisioning files
+*.keystore
+*.jks
+*.p12
+*.pfx
+*.mobileprovision
+
+# Local application data and databases
+*.db
+*.db-shm
+*.db-wal
+*.sqlite
+*.sqlite3
+
+# Operating system files
+.DS_Store
+Thumbs.db
+Desktop.ini
+
+# Temporary and backup files
+*.tmp
+*.temp
+*.bak
+*.swp
+*~

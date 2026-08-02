@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage
+    x:Class="tellescm_MD_Final.Views.DashboardPage"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:viewModels="clr-namespace:tellescm_MD_Final.ViewModels"
+    x:DataType="viewModels:DashboardViewModel"
+    Title="Home">
+
+    <RefreshView Command="{Binding LoadCommand}" IsRefreshing="{Binding IsBusy}">
+        <ScrollView>
+            <VerticalStackLayout Padding="24" Spacing="20">
+                <VerticalStackLayout Spacing="4">
+                    <Label Style="{StaticResource PageTitle}"
+                           Text="Torque Tracker"
+                           SemanticProperties.HeadingLevel="Level1" />
+                    <Label Text="Keep the basics for each vehicle in one place." />
+                </VerticalStackLayout>
+
+                <Label IsVisible="{Binding HasError}"
+                       SemanticProperties.Description="Loading error"
+                       Style="{StaticResource StatusMessage}"
+                       Text="{Binding ErrorMessage}" />
+
+                <Border Padding="18">
+                    <VerticalStackLayout Spacing="12">
+                        <Label Style="{StaticResource SectionTitle}"
+                               Text="Current vehicle"
+                               SemanticProperties.HeadingLevel="Level2" />
+
+                        <VerticalStackLayout IsVisible="{Binding HasVehicle}" Spacing="6">
+                            <Label FontAttributes="Bold"
+                                   FontSize="20"
+                                   Text="{Binding CurrentVehicle.Nickname}" />
+                            <HorizontalStackLayout Spacing="5">
+                                <Label Text="{Binding CurrentVehicle.Year}" />
+                                <Label Text="{Binding CurrentVehicle.Make}" />
+                                <Label Text="{Binding CurrentVehicle.Model}" />
+                            </HorizontalStackLayout>
+                            <Label Text="{Binding CurrentVehicle.CurrentMileage, StringFormat='Current mileage: {0:N0} miles'}" />
+                        </VerticalStackLayout>
+
+                        <VerticalStackLayout IsVisible="{Binding HasNoVehicle}" Spacing="12">
+                            <Label Text="No vehicles have been added yet." />
+                            <Button Command="{Binding AddVehicleCommand}"
+                                    SemanticProperties.Hint="Opens the add vehicle form"
+                                    Text="Add your first vehicle" />
+                        </VerticalStackLayout>
+                    </VerticalStackLayout>
+                </Border>
+
+                <Button Command="{Binding OpenVehiclesCommand}"
+                        SemanticProperties.Hint="Opens the vehicle list"
+                        Style="{StaticResource SecondaryButton}"
+                        Text="View vehicles" />
+
+                <Border Padding="18">
+                    <VerticalStackLayout Spacing="8">
+                        <Label Style="{StaticResource SectionTitle}"
+                               Text="Maintenance"
+                               SemanticProperties.HeadingLevel="Level2" />
+                        <Label Text="No maintenance schedule has been added yet." />
+                    </VerticalStackLayout>
+                </Border>
+            </VerticalStackLayout>
+        </ScrollView>
+    </RefreshView>
+</ContentPage>

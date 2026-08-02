@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage
+    x:Class="tellescm_MD_Final.Views.AddVehiclePage"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:viewModels="clr-namespace:tellescm_MD_Final.ViewModels"
+    x:DataType="viewModels:AddVehicleViewModel"
+    Title="Add Vehicle">
+
+    <ScrollView>
+        <VerticalStackLayout Padding="24" Spacing="18">
+            <VerticalStackLayout Spacing="4">
+                <Label Style="{StaticResource PageTitle}"
+                       Text="Add vehicle"
+                       SemanticProperties.HeadingLevel="Level1" />
+                <Label Text="Enter the vehicle details below. All fields are required." />
+            </VerticalStackLayout>
+
+            <VerticalStackLayout Spacing="6">
+                <Label Style="{StaticResource FieldLabel}" Text="Nickname" />
+                <Border Style="{StaticResource InputBorder}">
+                    <Entry MaxLength="50"
+                           Placeholder="Daily driver"
+                           ReturnType="Next"
+                           SemanticProperties.Description="Vehicle nickname"
+                           Text="{Binding Nickname}" />
+                </Border>
+            </VerticalStackLayout>
+
+            <VerticalStackLayout Spacing="6">
+                <Label Style="{StaticResource FieldLabel}" Text="Year" />
+                <Border Style="{StaticResource InputBorder}">
+                    <Entry Keyboard="Numeric"
+                           MaxLength="4"
+                           Placeholder="2020"
+                           ReturnType="Next"
+                           SemanticProperties.Description="Vehicle year"
+                           Text="{Binding Year}" />
+                </Border>
+            </VerticalStackLayout>
+
+            <VerticalStackLayout Spacing="6">
+                <Label Style="{StaticResource FieldLabel}" Text="Make" />
+                <Border Style="{StaticResource InputBorder}">
+                    <Entry MaxLength="50"
+                           Placeholder="Toyota"
+                           ReturnType="Next"
+                           SemanticProperties.Description="Vehicle make"
+                           Text="{Binding Make}" />
+                </Border>
+            </VerticalStackLayout>
+
+            <VerticalStackLayout Spacing="6">
+                <Label Style="{StaticResource FieldLabel}" Text="Model" />
+                <Border Style="{StaticResource InputBorder}">
+                    <Entry MaxLength="50"
+                           Placeholder="Camry"
+                           ReturnType="Next"
+                           SemanticProperties.Description="Vehicle model"
+                           Text="{Binding Model}" />
+                </Border>
+            </VerticalStackLayout>
+
+            <VerticalStackLayout Spacing="6">
+                <Label Style="{StaticResource FieldLabel}" Text="Current mileage" />
+                <Border Style="{StaticResource InputBorder}">
+                    <Entry Keyboard="Numeric"
+                           MaxLength="10"
+                           Placeholder="45000"
+                           ReturnType="Done"
+                           SemanticProperties.Description="Current vehicle mileage"
+                           Text="{Binding CurrentMileage}" />
+                </Border>
+            </VerticalStackLayout>
+
+            <Label IsVisible="{Binding HasValidationMessage}"
+                   SemanticProperties.Description="Validation message"
+                   Style="{StaticResource StatusMessage}"
+                   Text="{Binding ValidationMessage}" />
+
+            <Button Command="{Binding SaveCommand}"
+                    IsEnabled="{Binding IsNotBusy}"
+                    SemanticProperties.Hint="Validates and saves the vehicle"
+                    Text="Save vehicle" />
+
+            <ActivityIndicator IsRunning="{Binding IsBusy}"
+                               IsVisible="{Binding IsBusy}"
+                               SemanticProperties.Description="Saving vehicle" />
+        </VerticalStackLayout>
+    </ScrollView>
+</ContentPage>
