@@ -9,4 +9,6 @@ public interface IVehicleRepository
     Task<Vehicle?> GetByIdAsync(int id);
 
     Task<int> AddAsync(Vehicle vehicle);
+
+    Task ArchiveAysnc(int id);
 }

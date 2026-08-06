@@ -31,4 +31,21 @@ public class SQLiteVehicleRepository(DatabaseService databaseService) : IVehicle
         var database = await databaseService.GetConnectionAsync();
         return await database.InsertAsync(vehicle);
     }
+
+    public async Task ArchiveAsync(int id)
+    {
+        var database = await databaseService.GetConnectionAsync();
+        var vehicle = await database.Table<Vehicle>()
+            .Where(v => v.Id == id)
+            .FirstOrDefaultAsync();
+
+        if (vehicle is null)
+        {
+            return;
+        }
+
+        vehicle.IsArchived = true;
+        await database.UpdateAsync(vehicle);
+    }
+
 }

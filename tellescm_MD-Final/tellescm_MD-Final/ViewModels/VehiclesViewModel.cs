@@ -96,4 +96,37 @@ public partial class VehiclesViewModel(IVehicleRepository vehicleRepository) : B
 
     [RelayCommand]
     private Task AddVehicleAsync() => Shell.Current.GoToAsync(nameof(AddVehiclePage));
+
+    [RelayCommand]
+    private async Task ArchiveVehicleAsync(Vehicle? vehicle)
+    {
+        if (vehicle is null || IsBusy)
+        {
+            return;
+        }
+
+        var confirmed = await Shell.Current.DisplayAlert(
+            "Archive vehicle",
+            $"Archive {vehicle.Nickname}? It will no longer appear in your vehicle list.",
+            "Archive",
+            "Cancel");
+
+        if (!confirmed)
+        {
+            return;
+        }
+
+        try
+        {
+            await vehicleRepository.ArchiveAsync(vehicle.Id);
+        }
+        catch (Exception)
+        {
+            ErrorMessage = "Vehicle could not be archived. Please try again.";
+            return;
+        }
+
+        await LoadAsync();
+    }
+
 }

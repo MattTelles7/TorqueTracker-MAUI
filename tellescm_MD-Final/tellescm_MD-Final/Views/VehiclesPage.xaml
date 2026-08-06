@@ -6,6 +6,7 @@
     xmlns:models="clr-namespace:tellescm_MD_Final.Models"
     xmlns:viewModels="clr-namespace:tellescm_MD_Final.ViewModels"
     x:DataType="viewModels:VehiclesViewModel"
+    x:Name="Root"
     Title="Vehicles">
 
     <Grid Padding="24" RowDefinitions="Auto,Auto,*" RowSpacing="16">
@@ -46,19 +47,28 @@
                 <CollectionView.ItemTemplate>
                     <DataTemplate x:DataType="models:Vehicle">
                         <Border Margin="0,0,0,12" Padding="16">
-                            <VerticalStackLayout Spacing="5">
-                                <Label FontAttributes="Bold"
-                                       FontSize="18"
-                                       Text="{Binding Nickname}" />
-                                <HorizontalStackLayout Spacing="5">
-                                    <Label Text="{Binding Year}" />
-                                    <Label Text="{Binding Make}" />
-                                    <Label Text="{Binding Model}" />
-                                </HorizontalStackLayout>
-                                <Label Text="{Binding CurrentMileage, StringFormat='Current mileage: {0:N0} miles'}" />
-                            </VerticalStackLayout>
+                            <Grid ColumnDefinitions="*,Auto" ColumnSpacing="12">
+                                <VerticalStackLayout Grid.Column="0" Spacing="5">
+                                    <Label FontAttributes="Bold"
+                       FontSize="18"
+                       Text="{Binding Nickname}" />
+                                    <HorizontalStackLayout Spacing="5">
+                                        <Label Text="{Binding Year}" />
+                                        <Label Text="{Binding Make}" />
+                                        <Label Text="{Binding Model}" />
+                                    </HorizontalStackLayout>
+                                    <Label Text="{Binding CurrentMileage, StringFormat='Current mileage: {0:N0} miles'}" />
+                                </VerticalStackLayout>
+                                <Button Grid.Column="1"
+                    Command="{Binding Source={x:Reference Root}, Path=BindingContext.ArchiveVehicleCommand}"
+                    CommandParameter="{Binding .}"
+                    SemanticProperties.Hint="Archives this vehicle so it no longer appears in the list"
+                    Text="Archive"
+                    VerticalOptions="Start" />
+                            </Grid>
                         </Border>
                     </DataTemplate>
+
                 </CollectionView.ItemTemplate>
             </CollectionView>
         </RefreshView>
