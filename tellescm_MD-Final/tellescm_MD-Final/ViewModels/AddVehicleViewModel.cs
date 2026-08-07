@@ -1,13 +1,12 @@
 using CommunityToolkit.Mvvm.Input;
 using tellescm_MD_Final.Models;
 using tellescm_MD_Final.Repositories;
+using tellescm_MD_Final.Validation;
 
 namespace tellescm_MD_Final.ViewModels;
 
 public partial class AddVehicleViewModel(IVehicleRepository vehicleRepository) : BaseViewModel
 {
-    private const int EarliestVehicleYear = 1886;
-
     private string nickname = string.Empty;
     private string year = string.Empty;
     private string make = string.Empty;
@@ -71,10 +70,23 @@ public partial class AddVehicleViewModel(IVehicleRepository vehicleRepository) :
         var trimmedMake = Make.Trim();
         var trimmedModel = Model.Trim();
 
-        if (!TryValidate(trimmedNickname, trimmedMake, trimmedModel, out var parsedYear, out var parsedMileage))
+        var validator = new VehicleInputValidator();
+
+        var result = validator.Validate(
+            trimmedNickname,
+            trimmedMake,
+            trimmedModel,
+            Year,
+            CurrentMileage);
+
+        if (!result.IsValid)
         {
+            ValidationMessage = result.ErrorMessage;
             return;
         }
+
+        var parsedYear = result.Year;
+        var parsedMileage = result.Mileage;
 
         try
         {
@@ -91,7 +103,11 @@ public partial class AddVehicleViewModel(IVehicleRepository vehicleRepository) :
             };
 
             await vehicleRepository.AddAsync(vehicle);
-            await Shell.Current.DisplayAlert("Vehicle saved", $"{vehicle.Nickname} was added.", "OK");
+            await Shell.Current.DisplayAlert(
+                "Vehicle saved",
+                $"{vehicle.Nickname} was added.",
+                "OK");
+
             await Shell.Current.GoToAsync("..");
         }
         catch (Exception)
@@ -102,51 +118,5 @@ public partial class AddVehicleViewModel(IVehicleRepository vehicleRepository) :
         {
             IsBusy = false;
         }
-    }
-
-    private bool TryValidate(
-        string trimmedNickname,
-        string trimmedMake,
-        string trimmedModel,
-        out int parsedYear,
-        out int parsedMileage)
-    {
-        parsedYear = 0;
-        parsedMileage = 0;
-
-        if (string.IsNullOrWhiteSpace(trimmedNickname))
-        {
-            ValidationMessage = "Enter a nickname for the vehicle.";
-            return false;
-        }
-
-        if (string.IsNullOrWhiteSpace(trimmedMake))
-        {
-            ValidationMessage = "Enter the vehicle make.";
-            return false;
-        }
-
-        if (string.IsNullOrWhiteSpace(trimmedModel))
-        {
-            ValidationMessage = "Enter the vehicle model.";
-            return false;
-        }
-
-        var latestVehicleYear = DateTime.Today.Year + 1;
-        if (!int.TryParse(Year.Trim(), out parsedYear) ||
-            parsedYear < EarliestVehicleYear ||
-            parsedYear > latestVehicleYear)
-        {
-            ValidationMessage = $"Enter a year from {EarliestVehicleYear} through {latestVehicleYear}.";
-            return false;
-        }
-
-        if (!int.TryParse(CurrentMileage.Trim(), out parsedMileage) || parsedMileage < 0)
-        {
-            ValidationMessage = "Enter a current mileage of zero or greater.";
-            return false;
-        }
-
-        return true;
     }
 }
