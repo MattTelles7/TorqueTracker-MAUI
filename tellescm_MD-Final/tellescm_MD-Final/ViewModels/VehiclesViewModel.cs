@@ -58,6 +58,14 @@ public partial class VehiclesViewModel(IVehicleRepository vehicleRepository) : B
             }
 
             OnPropertyChanged(nameof(VehicleCount));
+
+            SortVehicles();
+            foreach (var vehicle in vehicles)
+            {
+                Vehicles.Add(vehicle);
+            }
+
+            OnPropertyChanged(nameof(VehicleCount));
         }
         catch (Exception)
         {
@@ -72,17 +80,23 @@ public partial class VehiclesViewModel(IVehicleRepository vehicleRepository) : B
 
     private void SortVehicles()
     {
-        IEnumerable<Vehicle> sortedVehicles = Vehicles;
+        List<Vehicle> sortedVehicles;
 
         if (SelectedSortOption == "Name (A-Z)")
         {
             sortedVehicles = Vehicles
-                .OrderBy(v => $"{v.Make} {v.Model}");
+                .OrderBy(v => v.Nickname)
+                .ToList();
         }
         else if (SelectedSortOption == "Mileage (High-Low)")
         {
             sortedVehicles = Vehicles
-                .OrderByDescending(v => v.CurrentMileage);
+                .OrderByDescending(v => v.CurrentMileage)
+                .ToList();
+        }
+        else
+        {
+            return;
         }
 
         Vehicles.Clear();
@@ -127,6 +141,7 @@ public partial class VehiclesViewModel(IVehicleRepository vehicleRepository) : B
         }
 
         await LoadAsync();
+        OnPropertyChanged(nameof(VehicleCount));
     }
 
 }

@@ -12,10 +12,25 @@
     <Grid Padding="24" RowDefinitions="Auto,Auto,*" RowSpacing="16">
         <Grid ColumnDefinitions="*,Auto" ColumnSpacing="12">
             <VerticalStackLayout Spacing="4">
-                <Label Style="{StaticResource PageTitle}"
-                       Text="Vehicles"
-                       SemanticProperties.HeadingLevel="Level1" />
-                <Label Text="Active vehicles saved on this device." />
+
+                <Label
+        Style="{StaticResource PageTitle}"
+        Text="Vehicles"
+        SemanticProperties.HeadingLevel="Level1"/>
+
+                <Label
+        Text="Active vehicles saved on this device."/>
+
+                <Label
+        FontAttributes="Bold"
+        Text="{Binding VehicleCount,
+               StringFormat='Active Vehicles: {0}'}"/>
+
+                <Picker
+        Title="Sort By"
+        ItemsSource="{Binding SortOptions}"
+        SelectedItem="{Binding SelectedSortOption}" />
+
             </VerticalStackLayout>
             <Button Grid.Column="1"
                     Command="{Binding AddVehicleCommand}"
